@@ -179,6 +179,8 @@ const Dashboard = () => {
     : "";
   const latestEvaluated = sessions.find((session) => session.evaluation?.improvements?.length || session.evaluation?.summary);
   const latestFocus = latestEvaluated?.evaluation?.improvements?.[0];
+  const latestStrengths = latestEvaluated?.evaluation?.strengths || [];
+const latestImprovements = latestEvaluated?.evaluation?.improvements || [];
 
   return (
     <DashboardLayout>
@@ -302,6 +304,64 @@ const Dashboard = () => {
             </article>
           </div>
         </section>
+        
+        {/* AI-generated strengths and areas to improve */}
+        <section className="grid gap-5 md:grid-cols-2">
+          <article className="rounded-2xl border border-emerald-400/15 bg-[#11111b] p-5 sm:p-6">
+            <div className="flex items-center gap-3">
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-400/10 text-emerald-300">
+                <FaCheckCircle size={19} />
+              </div>
+              <div>
+                <h2 className="font-semibold text-white">Your Strengths</h2>
+                <p className="mt-1 text-sm text-zinc-500">What you did well</p>
+              </div>
+            </div>
+
+            <ul className="mt-5 space-y-3">
+              {latestStrengths.length > 0 ? (
+                latestStrengths.map((item, index) => (
+                  <li key={index} className="flex gap-2 text-sm leading-6 text-zinc-300">
+                    <FaCheckCircle className="mt-1 shrink-0 text-emerald-300" />
+                    <span>{item}</span>
+                  </li>
+                ))
+              ) : (
+                <li className="text-sm text-zinc-500">
+                  Complete an evaluated interview to see your strengths here.
+                </li>
+              )}
+            </ul>
+          </article>
+
+          <article className="rounded-2xl border border-amber-400/15 bg-[#11111b] p-5 sm:p-6">
+            <div className="flex items-center gap-3">
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-amber-400/10 text-amber-300">
+                <FaLightbulb size={19} />
+              </div>
+              <div>
+                <h2 className="font-semibold text-white">Areas to Improve</h2>
+                <p className="mt-1 text-sm text-zinc-500">Your AI-generated suggestions</p>
+              </div>
+            </div>
+
+            <ul className="mt-5 space-y-3">
+              {latestImprovements.length > 0 ? (
+                latestImprovements.map((item, index) => (
+                  <li key={index} className="flex gap-2 text-sm leading-6 text-zinc-300">
+                    <FaLightbulb className="mt-1 shrink-0 text-amber-300" />
+                    <span>{item}</span>
+                  </li>
+                ))
+              ) : (
+                <li className="text-sm text-zinc-500">
+                  Complete an evaluated interview to see suggestions here.
+                </li>
+              )}
+            </ul>
+          </article>
+        </section>
+
 
         <section className="flex min-w-0 flex-col justify-between gap-4 rounded-2xl border border-white/[0.07] bg-[#11111b] p-5 sm:flex-row sm:items-center sm:p-6">
           <div className="flex items-start gap-3"><div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-sky-400/10 text-sky-300"><FaBolt /></div><div><h2 className="font-semibold text-white">Ready for your next question?</h2><p className="mt-1 text-sm text-zinc-500">Choose HR, technical, or communication practice and keep building confidence.</p></div></div>
